@@ -9,7 +9,7 @@ import { expect } from "@jest/globals";
 const app = express();
 app.use(json());
 app.use(urlencoded({ extended: false }));
-app.use("/localhost:3000/login", updateAccout);
+app.use("/localhost:5000/login", updateAccout);
 app.set("port", 5000);
 
 it(`should return a status code of 200 and json data after login in'`, async () => {

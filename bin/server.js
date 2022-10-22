@@ -3,7 +3,9 @@
 
 import app from '../app.js';
 import { createServer } from 'http';
+import dotENV from 'dotenv';
 
+dotENV.config();
 const port = normalizePort(process.env.PORT || '3000');
 
 const server = createServer(app);

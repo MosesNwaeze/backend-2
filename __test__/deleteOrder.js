@@ -7,7 +7,7 @@ import deleteOrder from "../controllers/deleteOrder.js";
 import { expect } from "@jest/globals";
 
 const app = express();
-app.use("/localhost:3000/order_items/:id", deleteOrder);
+app.use("/localhost:5000/order_items/:id", deleteOrder);
 app.set("port", 5000);
 
 it(`should return a status code of 200 and "message: deleted successfully"`, async () => {

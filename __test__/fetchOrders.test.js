@@ -4,7 +4,7 @@ import fetchOrder from "../controllers/fetchOrders.js";
 import {expect} from "@jest/globals";
 
 const app = express();
-app.use("/localhost:3000/order_items/", fetchOrder);
+app.use("/localhost:5000/order_items/", fetchOrder);
 app.set("port", 5000);
 
 it("should return a status code of 200 and a json payload", async () => {
