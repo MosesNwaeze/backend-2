@@ -50,12 +50,7 @@ const fetchOrders = async (req, res) => {
         };
       })
     );
-    
-    if (orderResult.length > 0) {
-      return res.status(200).json(orderResult);
-    } else {
-      return res.status(304).json({ message: "No records" });
-    }
+    return res.status(200).json(orderResult);
   } catch (error) {
     console.log(`E-fetchOrdersController-${error.message}`);
     return res.status(500).json({ message: "Server Error" });
