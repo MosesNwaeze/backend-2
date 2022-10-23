@@ -13,7 +13,7 @@ const fetchOrders = async (req, res) => {
     const collectionLimit = Number(limit) > 20 ? Number(limit) : 5;
     const sellerId = await decodedToken(req);
     const page = typeof pages === "undefined" ? 1 : Number(pages);
-
+    console.log(page);
     const client = await mongoClient.connect();
     const ordersCollection = client.db("e_platform").collection("orders");
     const count = await ordersCollection.countDocuments({
