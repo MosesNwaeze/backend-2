@@ -10,10 +10,9 @@ const fetchOrders = async (req, res) => {
     const collectionSort =
       typeof sorting === "undefined" ? "shipping_limit_date" : sorting;
     const isPrev = Number(prev) === 1 ? true : false;
-    const collectionLimit = Number(limit) > 20 ? Number(limit) : 5;
+    const collectionLimit = Number(limit) > 20 ? Number(limit) : 20;
     const sellerId = await decodedToken(req);
     const page = typeof pages === "undefined" ? 1 : Number(pages);
-    console.log(page);
     const client = await mongoClient.connect();
     const ordersCollection = client.db("e_platform").collection("orders");
     const count = await ordersCollection.countDocuments({
@@ -21,9 +20,9 @@ const fetchOrders = async (req, res) => {
     });
     const orders = await ordersCollection
       .find({ seller_id: sellerId })
-      .sort({ [collectionSort]: 1 })
       .skip(page > 0 && !prev ? (page - 1) * collectionLimit : 0)
       .limit(collectionLimit)
+      .sort({ [collectionSort]: 1 })
       .toArray();
 
     const orderResult = await Promise.all(
@@ -51,6 +50,7 @@ const fetchOrders = async (req, res) => {
         };
       })
     );
+
     return res.status(200).json(orderResult);
   } catch (error) {
     console.log(`E-fetchOrdersController-${error.message}`);
