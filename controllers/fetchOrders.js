@@ -6,10 +6,11 @@ import decodedToken from "../auth/decodeToken.js";
 
 const fetchOrders = async (req, res) => {
   try {
-    const { pages, limit, sorting } = await req.query;
+    const { pages, limit, sorting, prev } = await req.query;
     const collectionSort =
       typeof sorting === "undefined" ? "shipping_limit_date" : sorting;
-    const collectionLimit = Number(limit) > 20 ? Number(limit) : 20;
+    const isPrev = Number(prev) === 1 ? true : false;
+    const collectionLimit = Number(limit) > 20 ? Number(limit) : 5;
     const sellerId = await decodedToken(req);
     const page = typeof pages === "undefined" ? 1 : Number(pages);
 
@@ -21,7 +22,7 @@ const fetchOrders = async (req, res) => {
     const orders = await ordersCollection
       .find({ seller_id: sellerId })
       .sort({ [collectionSort]: 1 })
-      .skip(page > 0 ? (page - 1) * collectionLimit : 0)
+      .skip(page > 0 && !prev ? (page - 1) * collectionLimit : 0)
       .limit(collectionLimit)
       .toArray();
 
