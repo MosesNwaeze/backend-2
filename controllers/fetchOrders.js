@@ -10,7 +10,7 @@ const fetchOrders = async (req, res) => {
     const collectionSort =
       typeof sorting === "undefined" ? "shipping_limit_date" : sorting;
     const isPrev = Number(prev) === 1 ? true : false;
-    const collectionLimit = Number(limit) > 20 ? Number(limit) : 20;
+    const collectionLimit = Number(limit) > 20 ? Number(limit) : 5;
     const sellerId = await decodedToken(req);
     const page = typeof pages === "undefined" ? 1 : Number(pages);
     const client = await mongoClient.connect();
@@ -22,8 +22,9 @@ const fetchOrders = async (req, res) => {
       .find({ seller_id: sellerId })
       .skip(page > 0 && !prev ? (page - 1) * collectionLimit : 0)
       .limit(collectionLimit)
-      .sort({ [collectionSort]: 1 })
       .toArray();
+
+    orders.sort((a, b) => a[collectionSort] - b[collectionSort]);
 
     const orderResult = await Promise.all(
       orders.map(async (order) => {
