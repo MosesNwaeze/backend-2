@@ -23,9 +23,7 @@ const fetchOrders = async (req, res) => {
       .skip(page > 0 && !prev ? (page - 1) * collectionLimit : 0)
       .limit(collectionLimit)
       .toArray();
-
     orders.sort((a, b) => a[collectionSort] - b[collectionSort]);
-
     const orderResult = await Promise.all(
       orders.map(async (order) => {
         const productCollection = client
